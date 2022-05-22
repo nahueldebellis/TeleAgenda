@@ -7,5 +7,5 @@ import com.agenda_telefonica.contactos.records.FiltroList;
 
 public interface ContactoRepositoryCustom {
 	public Optional<Contacto> findByName(String name);
-	//public List<Contacto> findBy(FiltroList filtro);
+	//public List<Contacto> findBy(FiltroList f);
 }

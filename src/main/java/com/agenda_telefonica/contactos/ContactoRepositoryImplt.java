@@ -1,6 +1,8 @@
 package com.agenda_telefonica.contactos;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,18 +12,28 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import com.agenda_telefonica.contactos.dict.Contacto_;
 import com.agenda_telefonica.contactos.records.FiltroList;
 
 
-@Repository
+@Service
 public class ContactoRepositoryImplt implements ContactoRepositoryCustom {
 
 	@Autowired
 	private EntityManager entity;
+
+	public ContactoRepositoryImplt(EntityManager em) {
+		this.entity = em;
+	}
 
 	@Override
 	public Optional<Contacto> findByName(String name) {
@@ -38,28 +50,4 @@ public class ContactoRepositoryImplt implements ContactoRepositoryCustom {
 		
 		return Optional.ofNullable(contactResult);
 	}
-
-	/*
-	@Override
-	public List<Contacto> findBy(FiltroList filtro) {
-		CriteriaBuilder builder = entity.getCriteriaBuilder();
-		CriteriaQuery<Contacto> criteria = builder.createQuery(Contacto.class);
-		Root<Contacto> root = criteria.from(Contacto.class);
-
-		List<Predicate> cond = new ArrayList<>();
-
-		filtro.name().ifPresent(n -> cond.add(builder.like(
-			root.get(Contacto_.name), n
-		)));
-
-		filtro.provincia().ifPresent(p -> cond.add(builder.like(
-			root.get(Contacto_.provincia), p
-		)));
-
-		criteria.where((Predicate[]) cond.toArray());
-		List<Contacto> contactsResult = entity.createQuery(criteria).getResultList();
-		
-		return contactsResult;
-	}
-	*/
 }

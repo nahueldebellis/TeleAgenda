@@ -5,4 +5,5 @@ public class Contacto_ {
 	final static public String name = "name";
 	final static public String phone = "phone";
 	final static public String provincia = "provincia";
+	final static public String createdAt = "createdAt";
 }

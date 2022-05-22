@@ -1,11 +1,13 @@
 package com.agenda_telefonica.contactos;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.agenda_telefonica.contactos.records.FiltroList;
@@ -34,20 +36,17 @@ public class ContactoServicio {
 		}
 	}
 
-	public Iterable<Contacto> findAll() {
+	public Iterable<Contacto> findAll(int pageable) {
 		return contactRepository.findAll();
 	}
 
-	/*
-	public List<Contacto> findBy(FiltroList filtro) {
-		return contactRepository.findBy(filtro);
+	public List<Contacto> findAllBy(String name, String provincia, LocalDate createdAt, Pageable pageable) {
+		return contactRepository.findBy(name, provincia, createdAt, pageable);
 	}
-	*/
 
 	public Contacto getByName(String name) throws Exception {
 		return contactRepository.findByName(name).orElseThrow(() -> new Exception("No existe el contacto"));
 	}
-
 
 	/**
 	 * 

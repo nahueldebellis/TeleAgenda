@@ -1,6 +1,7 @@
 package com.agenda_telefonica.contactos.records;
 
-import java.util.Optional;
+import java.time.LocalDate;
 
-public record FiltroList(Optional<String> name, Optional<String> provincia) {}
+public record FiltroList(String name, String provincia, LocalDate createdFrom) {
+}
 
