@@ -45,7 +45,7 @@ deja filtrar por ciertos campos:
 
 - name: parte del nombre del contacto
 - provincia: parte del codigo de area/provincia
-- created_from: a partir de que fecha fue creado
+- createdFrom: a partir de que fecha (YYYY-mm-dd) fue creado
 
 # Herramientas
 
