@@ -1,7 +1,6 @@
 package com.agenda_telefonica.contactos;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.agenda_telefonica.contactos.records.FiltroList;
+import com.agenda_telefonica.contactos.Exceptions.EmptyResourcesException;
+import com.agenda_telefonica.contactos.Exceptions.FormatException;
 import com.agenda_telefonica.contactos.records.JsonContactoPost;
 
 
@@ -28,14 +28,9 @@ public class ContactoController {
 	@Autowired
 	private ContactoServicio contactServicio;
 
-
 	@PostMapping(path="/contacto", headers = "content-type=application/json")
-	public Long add(@RequestBody JsonContactoPost telefono) {
-		try {
-			return contactServicio.create(telefono);
-		} catch(IllegalArgumentException e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-		}
+	public @ResponseBody String add(@RequestBody JsonContactoPost telefono) throws FormatException {
+		return contactServicio.create(telefono).toString();
 	}
 	
 	@GetMapping(path="/contactos")
@@ -46,23 +41,16 @@ public class ContactoController {
 		@RequestParam(name = "provincia", required = false) String provincia,
 		@RequestParam(name = "createdFrom", required = false) String createdFrom
 	) {
-		try {
-			//return contactServicio.findAll();
-			Pageable pageable = PageRequest.of(page, size);
-			return contactServicio.findAllBy(name, provincia, Strings.isEmpty(createdFrom) ? null : LocalDate.parse(createdFrom), pageable);
-		} catch(IllegalArgumentException e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-		}
+		Pageable pageable = PageRequest.of(page, size);
+		return contactServicio.findAllBy(name, provincia, Strings.isEmpty(createdFrom) ? null : LocalDate.parse(createdFrom), pageable);
 	}
 
 	@GetMapping(path="/contacto/{name}")
 	public Contacto get(@PathVariable String name) {
 		try {
 			return contactServicio.getByName(name);
-		} catch(IllegalArgumentException e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+		} catch(EmptyResourcesException e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
 		}
 	}
 }

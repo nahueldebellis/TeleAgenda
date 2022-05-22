@@ -1,3 +1,5 @@
 package com.agenda_telefonica.contactos.records;
 
-public record JsonContactoPost(String name, String phone) { }
+import java.util.Optional;
+
+public record JsonContactoPost(String name, String phone, Optional<String> codArea) { }

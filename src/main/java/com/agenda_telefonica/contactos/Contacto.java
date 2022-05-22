@@ -33,10 +33,10 @@ public class Contacto {
 
 	public Contacto() {}
 	
-	public Contacto(String name, String phoneNumber) {
+	public Contacto(String name, String phoneNumber, String provincia) {
 		this.name = name;
 		this.phoneNumber = phoneNumber;
-		this.provincia = "";
+		this.provincia = provincia;
 		this.createdAt = LocalDate.now();
 	}
 	
